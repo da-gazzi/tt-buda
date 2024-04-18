@@ -1,7 +1,7 @@
 .SUFFIXES:
 
 MAKEFLAGS := --jobs=$(shell nproc) --output-sync=target
-
+HOST_ARCH = $(shell uname -m)
 # Setup CONFIG, DEVICE_RUNNER, and out/build dirs first
 CONFIG ?= assert
 ARCH_NAME ?= grayskull
@@ -40,6 +40,14 @@ else
 $(error Unknown value for CONFIG "$(CONFIG)")
 endif
 
+ifeq ("$(HOST_ARCH)", "x86_64")
+CFLAGS_AVX = -mavx2
+CXXFLAGX_AVX = -maes -mavx
+else
+CFLAGS_AVX =
+CXXFLAGX_AVX =
+endif
+
 OBJDIR = $(OUT)/obj
 LIBDIR = $(OUT)/lib
 BINDIR = $(OUT)/bin
@@ -55,9 +63,9 @@ TORCHVISIONDIR = $(OUT)/vision
 WARNINGS ?= -Wdelete-non-virtual-dtor -Wreturn-type -Wswitch -Wuninitialized -Wno-unused-parameter
 CC ?= gcc
 CXX ?= g++
-CFLAGS_NO_WARN ?= -MMD -I. $(CONFIG_CFLAGS) -mavx2 -DBUILD_DIR=\"$(OUT)\" -I$(INCDIR) -DFMT_HEADER_ONLY -Ithird_party/fmt -Ithird_party/pybind11/include
+CFLAGS_NO_WARN ?= -MMD -I. $(CONFIG_CFLAGS) $(CFLAGS_AVX) -DBUILD_DIR=\"$(OUT)\" -I$(INCDIR) -DFMT_HEADER_ONLY -Ithird_party/fmt -Ithird_party/pybind11/include
 CFLAGS ?= $(CFLAGS_NO_WARN) $(WARNINGS)
-CXXFLAGS ?= --std=c++17 -maes -mavx $(CONFIG_CXXFLAGS)
+CXXFLAGS ?= --std=c++17 $(CXXFLAGS_AVX) $(CONFIG_CXXFLAGS)
 LDFLAGS ?= $(CONFIG_LDFLAGS) -Wl,-rpath,$(PREFIX)/lib -L$(LIBDIR) -Ldevice/lib
 SHARED_LIB_FLAGS = -shared -fPIC
 STATIC_LIB_FLAGS = -fPIC
