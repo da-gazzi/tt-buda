@@ -5,6 +5,7 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include "third_party/json/pybind11_json.hpp"
+#include <cstdint>
 
 #include <sstream>
 namespace py = pybind11;
