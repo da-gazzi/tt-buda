@@ -9,6 +9,7 @@ python_env: $(PYTHON_ENV)/.installed
 $(PYTHON_ENV)/.installed: python_env/requirements.txt
 	$(PYTHON_VERSION) -m venv $(PYTHON_ENV)
 	bash -c "unset LD_PRELOAD; source $(PYTHON_ENV)/bin/activate && pip3 install wheel==0.37.1"
+	bash -c "unset LD_PRELOAD; source $(PYTHON_ENV)/bin/activate && pip3 install --upgrade pip"
 	bash -c "unset LD_PRELOAD; source $(PYTHON_ENV)/bin/activate && pip3 install -r python_env/requirements.txt -f https://download.pytorch.org/whl/cpu/torch_stable.html"
 	touch $@
 
