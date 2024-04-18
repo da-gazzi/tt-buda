@@ -4,7 +4,7 @@ PYBUDA_CSRC_INCLUDES = \
 	-Ithird_party/json \
 	-Ithird_party/budabackend \
 	-Ithird_party/budabackend/netlist \
-	$(shell python3-config --includes) \
+	$(shell $(PYTHON_VERSION)-config --includes) \
 	-isystem $(PYTHON_ENV)/lib/$(PYTHON_VERSION)/site-packages/torch/include \
 	-isystem $(PYTHON_ENV)/lib/$(PYTHON_VERSION)/site-packages/torch/include/torch/csrc/api/include
 
