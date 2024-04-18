@@ -4,9 +4,9 @@ PYBUDA_CSRC_INCLUDES = \
 	-Ithird_party/json \
 	-Ithird_party/budabackend \
 	-Ithird_party/budabackend/netlist \
-	-I/usr/include/$(PYTHON_VERSION) \
+	$(shell python3-config --includes) \
 	-isystem $(PYTHON_ENV)/lib/$(PYTHON_VERSION)/site-packages/torch/include \
- 	-isystem $(PYTHON_ENV)/lib/$(PYTHON_VERSION)/site-packages/torch/include/torch/csrc/api/include
+	-isystem $(PYTHON_ENV)/lib/$(PYTHON_VERSION)/site-packages/torch/include/torch/csrc/api/include
 
 PYBUDA_CSRC_WARNINGS ?= -Wall -Wextra -Wno-pragmas
 PYBUDA_CSRC_CFLAGS ?= $(CFLAGS_NO_WARN) $(PYBUDA_CSRC_WARNINGS) -DUTILS_LOGGER_PYTHON_OSTREAM_REDIRECT=1
